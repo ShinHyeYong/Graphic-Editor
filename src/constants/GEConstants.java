@@ -1,5 +1,7 @@
 package constants; //package 선언
 
+import java.awt.Color;
+
 public class GEConstants { //GEConstants 클래스 선언
 	//GEMainFrame
 	public static final int WIDTH_MAINFRAME = 400; //MainFrame 가로길이(width) 상수 선언 및 할당
@@ -24,4 +26,9 @@ public class GEConstants { //GEConstants 클래스 선언
 	public static final String IMG_URL = "images/";
 	public static final String SUFFIX_TOOLBAR_BTN = ".gif";
 	public static final String SUFFIX_TOOLBAR_BTN_SLT = "SLT.gif";
+
+	//GEDrawingPanel
+	public static final Color FOREGROUND_COLOR = Color.BLACK; //GEDrawingPanel의 도형윤곽선색 상수 선언 및 할당	
+	public static final Color BACKGROUND_COLOR = Color.WHITE; //GEDrawingPanel의 배경색 상수 선언 및 할당
+
 }
