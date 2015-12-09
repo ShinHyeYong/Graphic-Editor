@@ -30,5 +30,6 @@ public class GEMainFrame extends JFrame{ //GEMainFrame 클래스 선언
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //메인 프레임 크기 설정(파라미터는 GEConstants 클래스에 정의된 상수로 지정)
 		setSize(GEConstants.WIDTH_MAINFRAME, GEConstants.HEIGTH_MAINFRAME); //메인 프레임 가시화
 		setVisible(true);
+		
 	}
 }
