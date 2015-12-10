@@ -40,6 +40,8 @@ public class GEMainFrame extends JFrame{ //GEMainFrame 클래스 선언
 	
 	//init 메소드 선언
 	public void init(){ //메인 프레임 종료 옵션 설정
+		shapeToolbar.init(drawingPanel); //GEToolBar 클래스의 init 메소드 호출
+		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); //메인 프레임 크기 설정(파라미터는 GEConstants 클래스에 정의된 상수로 지정)
 		setSize(GEConstants.WIDTH_MAINFRAME, GEConstants.HEIGTH_MAINFRAME); //메인 프레임 가시화
 		setVisible(true);
