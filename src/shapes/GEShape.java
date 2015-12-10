@@ -18,4 +18,5 @@ public abstract class GEShape{ //GEShape 추상클래스 선언
 	
 	abstract public void initDraw(Point startP); //void 타입 initDraw() 추상메소드 선언 (타입은 Point 클래스 타입, 도형의 시작점(startP)를 파라미터로 받음
 	abstract public void setCoordinate(Point currentP); // void 타입 setCoordinate() 추상메소드 선언 (타입은 Point 클래스 타입, 마우스가 눌러진 상태의 현재 점(currentP)을 파라미터로 받음)
+	abstract public GEShape clone(); //GEShape 클래스 타입 clone() 추상메소드 선언
 }

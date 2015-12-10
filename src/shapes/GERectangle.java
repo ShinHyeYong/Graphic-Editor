@@ -14,4 +14,7 @@ public class GERectangle extends GEShape{ //GERectangle 클래스 선언 (GEShape 클�
 		Rectangle tempRectangle = (Rectangle)myShape; //myShape 필드를 Rectangle 클래스 타입으로 캐스팅 후 Rectangle 클래스 타입 tempRectangle 변수에 저장		
 		tempRectangle.setFrameFromDiagonal(startP.x, startP.y, currentP.x, currentP.y); //Rectangle 클래스의 setFrameFromDiagonal() 메소드 호출. tempRectangle 도형의 윤곽선에 인접하는 박스크기를 설정
 	}
+	public GERectangle clone(){ //GERectangle 클래스 타입의 clone() 메소드 선언
+		return new GERectangle(); //GERectangle 클래스의 인스턴스를 생성하여 리턴
+	}
 }
