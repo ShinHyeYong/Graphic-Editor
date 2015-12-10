@@ -32,6 +32,8 @@ public class GEToolbar extends JToolBar { //GEToolbar 클래스 선언
 									GEConstants.SUFFIX_TOOLBAR_BTN)); //JRadioButton 클래스 인스턴스의 ImageIcon 생성 및 포함 (파라미터는 이미지의 URL, 버튼이름, 이미지 확장자)
 			rButton.setSelectedIcon(new ImageIcon(GEConstants.IMG_URL + 
 	                    btn.toString() + GEConstants.SUFFIX_TOOLBAR_BTN_SLT)); //JRadioButton 인스턴스의 선택되었을 때의 ImageIcon 생성 및 포함(파라미터는 이미지의 URL, 버튼이름, 이미지 확장자)
+			rButton.addActionListener(shapeToolBarHandler); //JRadioButton 인스턴스의 addActionListner() 메소드를 호출
+			rButton.setActionCommand(btn.toString()); //JRadioButton 인스턴스의 setActionCommand() 메소드를 호출
 			this.add(rButton); //JRadioButton 클래스의 인스턴스 포함
 			buttonGroup.add(rButton); //생성된 JRadioButton 클래스의 인스턴스를 ButtonGroup에 포함
 		}
@@ -50,14 +52,11 @@ public class GEToolbar extends JToolBar { //GEToolbar 클래스 선언
 		public void actionPerformed(ActionEvent e){ //void 타입 actionPerformed 메소드 선언 (ActionListner interface의 메소드를 오버라이드함. ActionEvent의 객체를 파라미터로 받음)
 			JRadioButton button = (JRadioButton)e.getSource(); //JRadioButton 클래스 타입 rButton 변수 선언 및 할당
 			if(button.getActionCommand().equals(EToolBarButtons.Rectangle.name())){ //button을 눌렀을 때의 이벤트 값이 EToolBarButton의 Rectangle값과 일치하면 조건문 실행
-				drawingPanel.setRectangle(new GERectangle()); //GEDrawingPanel의 setRectangle() 메소드 호출 (GERectangle 인스턴스를 생성하여 파라미터로 받음)
-				drawingPanel.setSelectShape(EToolBarButtons.Rectangle); //GEDrawingPanel의 setSelectShape() 메소드 호출 (EToolBarButton의 Rectangle 값을 파라미터로 받음)
+				drawingPanel.setCurrentShape(new GERectangle()); //GEDrawingPanel의 setCurrentShape() 메소드 호출 (GERectangle 인스턴스를 생성하여 파라미터로 받음)
 			}else if(button.getActionCommand().equals(EToolBarButtons.Ellipse.name())){
-				drawingPanel.setEllipse(new GEEllipse());
-				drawingPanel.setSelectShape(EToolBarButtons.Ellipse);
+				drawingPanel.setCurrentShape(new GEEllipse());
 			}else if(button.getActionCommand().equals(EToolBarButtons.Line.name())){
-				drawingPanel.setLine(new GELine());
-				drawingPanel.setSelectShape(EToolBarButtons.Line);
+				drawingPanel.setCurrentShape(new GELine());
 			}
 		}
 	}
