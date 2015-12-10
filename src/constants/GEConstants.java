@@ -18,7 +18,7 @@ public class GEConstants { //GEConstants 클래스 선언
 	public static enum EEditMenuItems{Undo, Redo, Delete, 잘라내기, Copy, 붙이기, Group, unGroup}; //EditMenuItems enum type 편집메뉴 메뉴아이템 이름 상수선언 및 할당
 	public static enum EColorMenuItems{SetLineColor, ClearLinColor, SetFillColor, ClearFillColor}; //ColorMenuItem enum type 컬러메뉴 메뉴아이템 이름 상수선언 및 할당
 
-	//GEToolbarShape
+	//GEToolbar
 	public static final String TITLE_SHAPETOOLBAR = "Shape Tools"; //ToolBar 버튼 이미지 확장자 상수 선언 및 할당
 	public static int WIDTH_SHAPETOOLBAR = 30; //ToolBar 선택된 버튼 이미지 확장자 상수 선언 및 할당
 	public static int HEIGHT_SHAPETOOLBAR = 200;
@@ -30,5 +30,5 @@ public class GEConstants { //GEConstants 클래스 선언
 	//GEDrawingPanel
 	public static final Color FOREGROUND_COLOR = Color.BLACK; //GEDrawingPanel의 도형윤곽선색 상수 선언 및 할당	
 	public static final Color BACKGROUND_COLOR = Color.WHITE; //GEDrawingPanel의 배경색 상수 선언 및 할당
-
+	public static enum EState { Idle, TwoPointsDrawing, NPointsDrawing } //그리기 상태를 표현할 enum 타입 상태변수 선언 및 할당
 }

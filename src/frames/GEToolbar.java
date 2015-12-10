@@ -12,6 +12,7 @@ import constants.GEConstants;
 import constants.GEConstants.EToolBarButtons;
 import shapes.GEEllipse;
 import shapes.GELine;
+import shapes.GEPolygon;
 import shapes.GERectangle;
 
 public class GEToolbar extends JToolBar { //GEToolbar 클래스 선언
@@ -46,6 +47,7 @@ public class GEToolbar extends JToolBar { //GEToolbar 클래스 선언
 	}
 	private void clickDefaultButton(){ //void 타입 clickDefaultButton() 메소드 선언
 		JRadioButton rButton = (JRadioButton)this.getComponent(EToolBarButtons.Rectangle.ordinal()); //JRadioButton 클래스 타입 rButton 변수 선언 및 할당
+		EToolBarButtons.Rectangle.ordinal(); //JRadioButton 클래스의 doClick() 메소드 호출
 		rButton.doClick(); //JRadioButton 클래스의 doClick() 메소드 호출
 	}
 	private class GEToolBarHandler implements ActionListener{ //GEToolBarHandler 내부 클래스 선언 (ActionListner interface implements)
@@ -57,7 +59,10 @@ public class GEToolbar extends JToolBar { //GEToolbar 클래스 선언
 				drawingPanel.setCurrentShape(new GEEllipse());
 			}else if(button.getActionCommand().equals(EToolBarButtons.Line.name())){
 				drawingPanel.setCurrentShape(new GELine());
+			}else if(button.getActionCommand().equals(
+					EToolBarButtons.Polygon.name())){
+				drawingPanel.setCurrentShape(new GEPolygon());
+				}
 			}
 		}
 	}
-}

@@ -10,6 +10,8 @@ import javax.swing.JPanel; //외부 클래스 import
 import javax.swing.event.MouseInputAdapter;
 
 import constants.GEConstants;
+import constants.GEConstants.EState;
+import shapes.GEPolygon;
 import shapes.GEShape;
 
 public class GEDrawingPanel extends JPanel { //GEDrawingPanel 클래스 선언
@@ -17,9 +19,12 @@ public class GEDrawingPanel extends JPanel { //GEDrawingPanel 클래스 선언
 	private MouseDrawingHandler drawingHandler;	//MouseDrawingHandler 클래스 타입 drawingHandler 필드 선언	
 	private GEShape currentShape; //GEShape 클래스 타입 currentShape 필드 선언
 	private ArrayList<GEShape> shapeList;//ArrayList 클래스 타입 (arrayitem 타입은 GEShape) shapeList 선언
+	private EState currentState; //EState 타입 currentState 필드 선언
 	
 	public GEDrawingPanel(){ //GEDrawingPanel 생성자 선언
 		super(); //수퍼 클래스(JPanel) 생성자 호출
+		currentState = EState.Idle; //: currentState필드에 그리기 상태를 Idle로 설정하여 저장
+		shapeList = new ArrayList<GEShape>(); //: ArrayList 클래스의 인스턴스 생성
 		drawingHandler = new MouseDrawingHandler();	//MouseDrawingHandler 클래스의 인스턴스 생성
 		addMouseListener(drawingHandler); //MouseListner 포함 (MouseDrawingHandler 인스턴스를 파라미터로 받음)
 		addMouseMotionListener(drawingHandler); //MouseMotionListner 포함 (MouseDrawingHandler 인스턴스를 파라미터로 받음)
@@ -47,18 +52,53 @@ public class GEDrawingPanel extends JPanel { //GEDrawingPanel 클래스 선언
 		currentShape.setCoordinate(currentP); //GEShape의 setCoordibate() 메소드를 호출 (currentP를 파라미터로 받음)
 		currentShape.draw(g2D); //Graphics2D의 draw() 메소드 호출
 	}	
+	public void continueDrawing(Point p){ //void 타입 continueDrawing() 메소드 선언 (Point 클래스 타입 객체를 파라미터로 받음)
+		((GEPolygon)currentShape).continueDrawing(p); //getCurrentShape() 메소드를 호출하여 반환된 값을 GEPolygon 클래스 타입으로 cast한 뒤  GEPolygon의 continueDrawing() 메소드 호출. (받은 Point 클래스 타입 객체를 파라미터로 받음)
+	}
 	public void finishDraw(GEShape shape){ //void 타입 finishDraw() 메소드 선언 (GEShape 클래스 타입 객체를 파라미터로 받음)
 		shapeList.add(shape); //ArrayList 클래스의 add() 메소드 호출 (파라미터로 받은 객체를 shapeList 필드에 저장)
+		currentState = EState.Idle; //setCurrentState() 메소드 호출 (그리기상태를 Idle로 설정)
+		repaint(); //repaint() 메소드 호출 (GEDrawingPanel의 모든 도형 컴포넌트들을 다시 그림)
 	}
 	private class MouseDrawingHandler extends MouseInputAdapter{ //MouseDrawingHandler 내부 클래스 선언 (implements MouseInputAdapter interface)
 		public void mousePressed(MouseEvent e){	//void 타입, mousePressed() 메소드 선언 (MouseInputAdapter interface의 mousePressed() 메소드 오버라이드. MouseEvent 타입의 객체를 파라미터로 받음)
-			initDraw(e.getPoint()); //initDraw() 메소드 호출 (MouseEvent의 getPoint() 메소드를 호출하여 반환된 값(마우스를 눌렀을 때 마우스 커서의 좌표)을 파라미터로 받음)
-		}							
-		public void mouseDragged(MouseEvent e){	// void 타입, mouseDragged() 메소드 선언(MouseInputAdapter interface의 mouseDragged() 메소드 오버라이드. MouseEvent 타입의 객체를 파라미터로 받음)
-			animateDraw(e.getPoint()); //animateDraw() 메소드 호출(MouseEvent의 getPoint() 메소드를 호출하여 반환된 값(마우스를 드래그 할 때 마우스 커서의 좌표를 파라미터로 받음)
+			if(currentState  == EState.Idle){ //currentState 필드값이 Estate의 Idle 값과 같다면 조건문 실행
+				initDraw(e.getPoint());	//initDraw() 메소드 호출
+				if(currentShape instanceof GEPolygon){ //currentShape 필드의 값이 GEPolygon으로 설정되어 있을 경우 조건문 실행
+					currentState = EState.NPointsDrawing; //currentState 필드의 값을 ESate의 NPointsDrawing으로 설정
+				}else{ //currentShape 필드의 값이 GEPolygon으로 설정되어 있지 않을 경우 조건문 실행
+					currentState = EState.TwoPointsDrawing; //currentState 필드의 값을 EState의 TwoPointsDrawing으로 설정
+					}
+				}
+			}
+		public void mouseMoved(MouseEvent e){ //void 타입 mouseMoved() 메소드 선언		
+			if(currentState == EState.NPointsDrawing){ //currentState 필드의 값이 그리기 상태 상수(EState)의 NPointsDrawing 값과 같다면 조건문 실행		
+				animateDraw(e.getPoint()); //animateDraw() 메소드 호출 
+			}	
 		}
+		public void mouseDragged(MouseEvent e){	// void 타입, mouseDragged() 메소드 선언(MouseInputAdapter interface의 mouseDragged() 메소드 오버라이드. MouseEvent 타입의 객체를 파라미터로 받음)
+			if (currentState != EState.Idle){ //currentState 필드의 값이 Estate의 Idle 값과 같지 않다면 조건문 실행
+				animateDraw(e.getPoint()); //animateDraw() 메소드 호출
+				}
+			}
 		public void mouseReleased(MouseEvent e){ //void 타입 mouseReleased() 메소드 호출
-			finishDraw(currentShape); //finishDraw() 메소드 호출 (currentSahep 필드를 파라미터로 받음)
+			if(currentState == EState.TwoPointsDrawing){ //currentState 필드의 값이 EState의 TwoPointsDrawing 값과 같다면 조건문 실행
+				finishDraw(currentShape); //finishDraw() 메소드 호출 (currentShape 필드를 파라미터로 받음)
+				}
+			}
+		public void mouseClicked(MouseEvent e){ //void 타입 mouseClicked() 메소드 선언
+			if(e.getButton() == MouseEvent.BUTTON1){ //: MouseEvent 클래스의 getPoint() 메소드를 호출하여 반환된 값(클릭된 마우스 버튼)이 MouseEvent 클래스의 BUTTON1 상수 값(마우스 왼쪽버튼 클릭)과 같다면 조건문 실행
+				if(currentState == EState.NPointsDrawing){ //currentState 필드의 값이 EState의 NPointDrawing 값과 같다면 조건문 실행
+					if(e.getClickCount() == 1){ //MouseEvent 클래스의 getClickCount() 메소드를 호출하여 반환된 값(마우스 버튼 클릭 횟수) 이 정수값 1과 같다면(클릭 횟수가 1번) 조건문 실행
+						continueDrawing(e.getPoint()); //continueDrawing() 메소드 호출
+					}					
+					else if(e.getClickCount() == 2){ //MouseEvent 클래스의 getClickCount() 메소드를 호출하여 반환된 값이 정수값 2 (클릭 횟수가2번)와 같다면 조건문 실행
+						finishDraw(currentShape); //finishDraw() 메소드 호출 (currentShape 필드 값을 파라미터로 받음)
+						currentState = EState.Idle; //currentState 필드의 값을 EState의 Idle로 설정
+						repaint(); //repaint() 메소드 호출 (GEDrawingPanel의 모든 도형 컴포넌트들을 다시 그림)
+					}
+				}						
+			}							
 		}
 	}
 }
